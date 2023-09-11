@@ -13,7 +13,13 @@ const restaurant = (db) => {
 		if (booking.seats > table.capacity) {
 			return "capacity greater than the table seats";
 		}
-    }
+	}
+	
+	async function isAvailableTable(booking) {
+		const query = `SELECT * FROM public.table_booking WHERE booked = false AND capacity >= ${booking.seats}`;
+		const tables = (await db.manyOrNone(query)) || [];
+		return tables.length ? true : false;
+	}
 
 	async function getBookedTables() {
 		// get all the booked tables
@@ -38,6 +44,7 @@ const restaurant = (db) => {
 	return {
 		getTables,
 		bookTable,
+		isAvailableTable,
 		getBookedTables,
 		isTableBooked,
 		cancelTableBooking,
