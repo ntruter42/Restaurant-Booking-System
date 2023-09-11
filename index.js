@@ -19,7 +19,7 @@ app.use(session({
 	secret: "secret42",
 	resave: false,
 	saveUninitialized: false,
-	cookie: { }
+	cookie: {}
 }));
 
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -71,7 +71,9 @@ app.get("/bookings", async (req, res) => {
 	const tables = await restaurantTableBooking.getBookedTables();
 
 	res.render('bookings', {
-		tables
+		tables,
+		error: req.flash('error')[0],
+		success: req.flash('success')[0]
 	});
 });
 
@@ -88,7 +90,11 @@ app.get("/bookings/:username", async (req, res) => {
 });
 
 app.post("/add", async (req, res) => {
-	await restaurantTableBooking.addTable(req.body.table_name, req.body.capacity);
+	if (await restaurantTableBooking.addTable(req.body.table_name, req.body.capacity)) {
+		req.flash('success', `${req.body.table_name} successfully added!`);
+	} else {
+		req.flash('error', `${req.body.table_name} failed to add`);
+	}
 
 	res.redirect('/bookings');
 });

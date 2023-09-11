@@ -55,8 +55,8 @@ const restaurant = (db, schema) => {
 	}
 
 	async function addTable(table_name, capacity) {
-		const query = `INSERT INTO ${schema || 'public'}.table_booking (table_name, capacity, booked) values ('${table_name}', ${capacity}, false)`;
-		await db.none(query);
+		const query = `INSERT INTO ${schema || 'public'}.table_booking (table_name, capacity, booked) values ('${table_name}', ${capacity}, false) RETURNING id`;
+		return (await db.oneOrNone(query) || false);
 	}
 
 	async function getBookedTablesForUser(username) {
