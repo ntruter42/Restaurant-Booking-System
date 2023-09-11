@@ -37,7 +37,7 @@ app.get("/", async (req, res) => {
 
 app.post("/book", async (req, res) => {
 	await restaurantTableBooking.bookTable({
-		tableId: req.body.tableId,
+		tableName: req.body.tableName,
 		username: req.body.username,
 		phoneNumber: req.body.phone_number,
 		seats: req.body.booking_size

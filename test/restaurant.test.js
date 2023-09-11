@@ -12,7 +12,7 @@ describe("The restaurant booking table", function () {
 	let restaurantTableBooking;
 	beforeEach(async function () {
 		try {
-			restaurantTableBooking = RestaurantTableBooking(db);
+			restaurantTableBooking = RestaurantTableBooking(db, 'tests');
 			// clean the tables before each test run
 			// await db.none("TRUNCATE TABLE table_booking RESTART IDENTITY CASCADE;");
 		} catch (err) {
@@ -76,14 +76,13 @@ describe("The restaurant booking table", function () {
 
 	it("should check if the capacity is not greater than the available seats.", async function () {
 		const result = await restaurantTableBooking.bookTable({
-			tableId: 4,
 			tableName: 'Table four',
 			username: 'Kim',
 			phoneNumber: '084 009 8910',
 			seats: 3
 		});
 
-		assert.deepEqual("capacity greater than the table seats", result);
+		assert.deepEqual("Capacity greater than the table seats", result);
 	});
 
 	it("should check if there are available seats for a booking.", async function () {
@@ -97,7 +96,7 @@ describe("The restaurant booking table", function () {
 
 	it("should check if the booking has a user name provided.", async function () {
 		assert.deepEqual("Please enter a username", await restaurantTableBooking.bookTable({
-			tableName: 'Table eight',
+			tableName: 'Table four',
 			phoneNumber: '084 009 8910',
 			seats: 2
 		}));
@@ -105,14 +104,14 @@ describe("The restaurant booking table", function () {
 
 	it("should check if the booking has a contact number provided.", async function () {
 		assert.deepEqual("Please enter a contact number", await restaurantTableBooking.bookTable({
-			tableName: 'Table eight',
+			tableName: 'Table four',
 			username: 'Kim',
 			seats: 2
 		}));
 	});
 
 	it("should not be able to book a table with an invalid table name.", async function () {
-		await restaurantTableBooking.bookTable({
+		const message = await restaurantTableBooking.bookTable({
 			tableName: 'Table eight',
 			username: 'Kim',
 			phoneNumber: '084 009 8910',
