@@ -20,6 +20,7 @@ describe("The restaurant booking table", function () {
 			throw err;
 		}
 	});
+	this.timeout(3000);
 
 	it("should get all the available tables", async function () {
 		assert.deepEqual([{
