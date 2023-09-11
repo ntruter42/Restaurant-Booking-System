@@ -46,8 +46,18 @@ app.post("/book", async (req, res) => {
 	res.redirect('/');
 })
 
-app.get("/bookings", (req, res) => {
-	res.render('bookings', { tables: [{}, {}, {}, {}, {}, {}] })
+app.post("/cancel", (req, res) => {
+
+
+	res.redirect('/bookings');
+});
+
+app.get("/bookings", async (req, res) => {
+	const tables = await restaurantTableBooking.getBookedTables();
+
+	res.render('bookings', {
+		tables
+	});
 });
 
 

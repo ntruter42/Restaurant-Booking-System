@@ -19,8 +19,11 @@ const restaurant = (db, schema) => {
 		} else if (!booking.phoneNumber) {
 			return "Please enter a contact number";
 		} else {
-			const query2 = `UPDATE ${schema || 'public'}.table_booking SET booked = true WHERE table_name = '${booking.tableName}' RETURNING booked`
-			return (await db.one(query2)).booked;
+			const query2 = `UPDATE ${schema || 'public'}.table_booking`
+			const set2 = ` SET booked = true, username = '${booking.username}', number_of_people = ${booking.seats}, contact_number = ${booking.phoneNumber}`;
+			const clause2 = ` WHERE table_name = '${booking.tableName}'`;
+			const return2 = ` RETURNING booked`;
+			return (await db.one(query2 + set2 + clause2 + return2)).booked;
 		}
 	}
 
@@ -31,7 +34,8 @@ const restaurant = (db, schema) => {
 	}
 
 	async function getBookedTables() {
-		// get all the booked tables
+		const query = `SELECT * FROM ${schema || 'public'}.table_booking WHERE booked = true`;
+		return await db.manyOrNone(query);
 	}
 
 	async function isTableBooked(tableName) {
