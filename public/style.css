@@ -26,3 +26,7 @@ body {
 .booked {
     background-color: lightseagreen;
 }
+
+.hidden {
+	display: none !important;
+}

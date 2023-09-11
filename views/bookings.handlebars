@@ -1,19 +1,23 @@
 <h1 class="title is-2">Bookings</h1>
 
+{{#if error}}
 <div class="notification is-danger is-light">
 	{{!-- you can remove the button below if you want --}}
-	<button class="delete"></button>
+	<button type="button" class="delete"></button>
 	{{error}}
-	{{!-- <a href="https://bulma.io/documentation/elements/notification/">Read here if you wanna change the style</a>
-	--}}
+	{{!-- <a href="https://bulma.io/documentation/elements/notification/">Read here if you wanna change the
+		style</a> --}}
 </div>
+{{/if}}
+{{#if success}}
 <div class="notification is-success is-light">
 	{{!-- you can remove the button below if you want --}}
-	<button class="delete"></button>
+	<button type="button" class="delete"></button>
 	{{success}}
-	{{!-- <a href="https://bulma.io/documentation/elements/notification/">Read here if you wanna change the style</a>
-	--}}
+	{{!-- <a href="https://bulma.io/documentation/elements/notification/">Read here if you wanna change the
+		style</a> --}}
 </div>
+{{/if}}
 
 <form action="/bookings" method="post">
 	<div class="field">
@@ -43,7 +47,7 @@
 		<td>0{{contact_number}}</td>
 		<form action="/cancel/{{table_name}}" method="post">
 			<td>
-				<button class="button is-warning">Cancel booking</button>
+				<button class="button is-warning" name="reset">Cancel booking</button>
 			</td>
 		</form>
 	</tr>

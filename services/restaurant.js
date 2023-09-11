@@ -46,8 +46,8 @@ const restaurant = (db, schema) => {
 	}
 
 	async function cancelTableBooking(tableName) {
-		const query = `UPDATE ${schema || 'public'}.table_booking SET booked = false, username = null, number_of_people = null, contact_number = null WHERE table_name = ${tableName} RETURNING booked`;
-		return !(await db.none(query)).booked;
+		const query = `UPDATE ${schema || 'public'}.table_booking SET booked = false, username = null, number_of_people = null, contact_number = null WHERE table_name = '${tableName}' RETURNING booked`;
+		return !(await db.one(query)).booked;
 	}
 
 	async function editTableBooking(username) {
