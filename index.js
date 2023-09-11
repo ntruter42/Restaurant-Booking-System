@@ -87,6 +87,11 @@ app.get("/bookings/:username", async (req, res) => {
 	});
 });
 
+app.post("/add", async (req, res) => {
+	await restaurantTableBooking.addTable(req.body.table_name, req.body.capacity);
+
+	res.redirect('/bookings');
+});
 
 var portNumber = process.env.PORT || 3000;
 

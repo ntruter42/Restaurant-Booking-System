@@ -54,9 +54,13 @@ const restaurant = (db, schema) => {
 		// edit number_of_people and contact_number columns by username
 	}
 
+	async function addTable(table_name, capacity) {
+		const query = `INSERT INTO ${schema || 'public'}.table_booking (table_name, capacity, booked) values ('${table_name}', ${capacity}, false)`;
+		await db.none(query);
+	}
+
 	async function getBookedTablesForUser(username) {
 		const query = `SELECT * FROM ${schema || 'public'}.table_booking WHERE booked = true AND username = '${username}' ORDER BY id`;
-
 		return await db.manyOrNone(query);
 	}
 
@@ -68,7 +72,8 @@ const restaurant = (db, schema) => {
 		isTableBooked,
 		cancelTableBooking,
 		editTableBooking,
-		getBookedTablesForUser
+		getBookedTablesForUser,
+		addTable
 	}
 }
 
