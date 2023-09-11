@@ -10,7 +10,9 @@ const restaurant = (db, schema) => {
 		const query1 = `SELECT * FROM ${schema || 'public'}.table_booking WHERE table_name = '${booking.tableName}'`;
 		const table = await db.oneOrNone(query1);
 
-		if (!table) {
+		if (!booking.tableName) {
+			return "Please select a table";
+		} else if (!table) {
 			return "Invalid table name provided";
 		} else if (booking.seats > table.capacity) {
 			return "Capacity greater than the table seats";
