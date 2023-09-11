@@ -60,6 +60,18 @@ app.get("/bookings", async (req, res) => {
 	});
 });
 
+app.post("/bookings", (req, res) => {
+	res.redirect('/bookings/' + req.body.username);
+})
+
+app.get("/bookings/:username", async (req, res) => {
+	const tables = await restaurantTableBooking.getBookedTablesForUser(req.params.username);
+
+	res.render('bookings', {
+		tables
+	});
+});
+
 
 var portNumber = process.env.PORT || 3000;
 

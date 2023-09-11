@@ -144,17 +144,16 @@ describe("The restaurant booking table", function () {
 	});
 
 	it("should allow users to book tables", async function () {
-
 		assert.deepEqual([], await restaurantTableBooking.getBookedTablesForUser('jodie'));
 
-		restaurantTableBooking.bookTable({
+		await restaurantTableBooking.bookTable({
 			tableName: 'Table five',
 			username: 'Jodie',
 			phoneNumber: '084 009 8910',
 			seats: 4
 		});
 
-		restaurantTableBooking.bookTable({
+		await restaurantTableBooking.bookTable({
 			tableName: 'Table four',
 			username: 'Jodie',
 			phoneNumber: '084 009 8910',
@@ -169,12 +168,26 @@ describe("The restaurant booking table", function () {
 		})
 
 		// should only return 2 bookings as two of the bookings were for the same table
-		assert.deepEqual([{}, {}], await restaurantTableBooking.getBookedTablesForUser('jodie'));
+		assert.deepEqual([{
+			booked: true,
+			capacity: 2,
+			contact_number: 840098910,
+			id: 4,
+			number_of_people: 2,
+			table_name: 'Table four',
+			username: 'Jodie'
+		}, {
+			booked: true,
+			capacity: 6,
+			contact_number: 840098910,
+			id: 5,
+			number_of_people: 4,
+			table_name: 'Table five',
+			username: 'Jodie'
+		}], await restaurantTableBooking.getBookedTablesForUser('Jodie'));
 	});
 
 	it("should be able to cancel a table booking", async function () {
-		let restaurantTableBooking = await RestaurantTableBooking(db);
-
 		await restaurantTableBooking.bookTable({
 			tableName: 'Table five',
 			username: 'Jodie',

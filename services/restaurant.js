@@ -20,7 +20,7 @@ const restaurant = (db, schema) => {
 			return "Please enter a contact number";
 		} else {
 			const query2 = `UPDATE ${schema || 'public'}.table_booking`
-			const set2 = ` SET booked = true, username = '${booking.username}', number_of_people = ${booking.seats}, contact_number = ${booking.phoneNumber}`;
+			const set2 = ` SET booked = true, username = '${booking.username}', number_of_people = ${booking.seats}, contact_number = ${booking.phoneNumber.replace(/\s/g, '')}`;
 			const clause2 = ` WHERE table_name = '${booking.tableName}'`;
 			const return2 = ` RETURNING booked`;
 			return (await db.one(query2 + set2 + clause2 + return2)).booked;
@@ -34,7 +34,7 @@ const restaurant = (db, schema) => {
 	}
 
 	async function getBookedTables() {
-		const query = `SELECT * FROM ${schema || 'public'}.table_booking WHERE booked = true`;
+		const query = `SELECT * FROM ${schema || 'public'}.table_booking WHERE booked = true ORDER BY id`;
 		return await db.manyOrNone(query);
 	}
 
@@ -53,7 +53,9 @@ const restaurant = (db, schema) => {
 	}
 
 	async function getBookedTablesForUser(username) {
-		// get user table booking
+		const query = `SELECT * FROM ${schema || 'public'}.table_booking WHERE booked = true AND username = '${username}' ORDER BY id`;
+
+		return await db.manyOrNone(query);
 	}
 
 	return {
