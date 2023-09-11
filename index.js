@@ -5,8 +5,12 @@ import bodyParser from "body-parser";
 import flash from "flash-express";
 import "dotenv/config";
 
+import RestaurantTableBooking from "./services/restaurant.js";
+
 const app = express()
-// configure database connection
+const connectionString = process.env.DATABASE_URL;
+const db = pgp()(connectionString);
+const restaurantTableBooking = RestaurantTableBooking(db);
 
 app.use(express.static('public'));
 app.use(flash());
@@ -23,11 +27,12 @@ const handlebarSetup = exphbs.engine({
 app.engine('handlebars', handlebarSetup);
 app.set('view engine', 'handlebars');
 
-app.get("/", (req, res) => {
-	const tables = ;
+app.get("/", async (req, res) => {
+	const tables = await restaurantTableBooking.getTables();
 
     res.render('index', {
-		tables : [{}, {}, {booked : true}, {}, {}, {}]})
+		tables
+	})
 });
 
 
