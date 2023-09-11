@@ -76,6 +76,7 @@ describe("The restaurant booking table", function () {
 
 	it("should check if the capacity is not greater than the available seats.", async function () {
 		const result = await restaurantTableBooking.bookTable({
+			tableId: 4,
 			tableName: 'Table four',
 			username: 'Kim',
 			phoneNumber: '084 009 8910',
