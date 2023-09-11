@@ -2,7 +2,7 @@ const restaurant = (db, schema) => {
 
 	async function getTables() {
 		// get all the available tables
-		const query = `SELECT * FROM ${schema || 'public'}.table_booking`;
+		const query = `SELECT * FROM ${schema || 'public'}.table_booking ORDER BY id`;
 		return await db.manyOrNone(query);
 	}
 
@@ -40,7 +40,8 @@ const restaurant = (db, schema) => {
 	}
 
 	async function cancelTableBooking(tableName) {
-		// cancel a table by name
+		const query = `UPDATE ${schema || 'public'}.table_booking SET booked = false, username = null, number_of_people = null, contact_number = null WHERE table_name = ${tableName} RETURNING booked`;
+		return !(await db.none(query)).booked;
 	}
 
 	async function editTableBooking(username) {

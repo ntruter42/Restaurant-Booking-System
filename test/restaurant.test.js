@@ -14,7 +14,7 @@ describe("The restaurant booking table", function () {
 		try {
 			restaurantTableBooking = RestaurantTableBooking(db, 'tests');
 			// clean the tables before each test run
-			// await db.none("TRUNCATE TABLE table_booking RESTART IDENTITY CASCADE;");
+			await db.none("UPDATE tests.table_booking SET booked = false, username = null, number_of_people = null, contact_number = null");
 		} catch (err) {
 			console.log(err);
 			throw err;
