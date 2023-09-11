@@ -123,7 +123,7 @@ describe("The restaurant booking table", function () {
 
 	it("should be able to book a table.", async function () {
 		// Table three should not be booked
-		assert.equal(true, await restaurantTableBooking.isTableBooked('Table three'));
+		assert.equal(false, await restaurantTableBooking.isTableBooked('Table three'));
 		// book Table three
 
 		await restaurantTableBooking.bookTable({
